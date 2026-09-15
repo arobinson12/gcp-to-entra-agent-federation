@@ -7,6 +7,14 @@ Both agents use **Gemini 3.7 Flash** (`gemini-3.7-flash`).
 ---
 
 ## 🏗️ Architecture & How It Works
+### Option 1 (preferred) - Agent Identity mints OIDC ID token
+<img width="816" height="433" alt="Screenshot 2026-09-15 at 1 15 57 PM" src="https://github.com/user-attachments/assets/9efd989e-23a5-4104-90fc-6b2500555c2a" />
+
+### Option 2 - Service Account assigned directly to agent
+<img width="818" height="443" alt="Screenshot 2026-09-15 at 1 15 21 PM" src="https://github.com/user-attachments/assets/7c65f5a0-8424-4a7e-95fb-0be5307e8071" />
+
+
+
 
 The solution uses a **2-step token exchange** flow:
 
