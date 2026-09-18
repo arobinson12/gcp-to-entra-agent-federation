@@ -10,6 +10,9 @@ The agent is powered by **Gemini 3.7 Flash** (`gemini-3.7-flash`).
 
 GCP Agent Identity supports issuing Google-signed OIDC JWTs directly from the agent's native **SPIFFE ID**. 
 
+<img width="818" height="433" alt="Screenshot 2026-09-17 at 8 58 45 PM" src="https://github.com/user-attachments/assets/15b3e909-817b-4833-a91c-1000ae9a0313" />
+
+
 ### Previous vs. Current Architecture
 
 - **Previous (Legacy):** Required creating and maintaining a GCP Service Account, configuring Google Cloud IAM impersonation bindings, and configuring the Entra Agent Blueprint FIC with the Service Account's numeric OAuth Client ID.
