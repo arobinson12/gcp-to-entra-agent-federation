@@ -12,6 +12,27 @@ GCP Agent Identity supports issuing Google-signed OIDC JWTs directly from the ag
 
 <img width="818" height="433" alt="Screenshot 2026-09-17 at 8 58 45 PM" src="https://github.com/user-attachments/assets/15b3e909-817b-4833-a91c-1000ae9a0313" />
 
+### 1: Auth Manager brokering (User Token - Tc)
+Auth Manager initiates a 3-Legged OAuth (3LO) flow and retrieves the User Access Token (Tc), injecting it into the ADK Agent’s execution context.
+
+### 2: Interactive Login
+The user completes the interactive Entra ID login in their browser to authorize the agent.
+
+### 3: Agent Auth via WIF (Exchange Token - T1)
+The ADK Agent uses its Agent Identity SPIFFE ID (SVID) as a Federated Identity Credential (FIC) to request the Agent Exchange Token (T1) from Entra ID.
+
+### 4: OBO Exchange (Resource Token - TR)
+The ADK Agent performs an On-Behalf-Of (OBO) exchange, presenting both T1 and Tc to Entra ID to obtain the final Resource Access Token (TR).
+
+### 5: Policy & Permission Validation
+Entra ID validates the OBO exchange against the configured Agent Blueprint and Child Agent ID app registrations to ensure proper delegated permissions.
+
+### 6: Resource API Call
+The ADK Agent calls the target resource (e.g., MS Graph) using TR. It mathematically hashes the User ID and Agent ID into a deterministic UUIDv5, injecting it into the client-request-id HTTP header.
+
+### 7: Dual-Identity Audit Trail (Cross-Cloud Correlation)
+The ADK Agent writes a custom audit log to Cloud Logging containing the agent, user, API endpoint, and the UUIDv5 hash. Simultaneously, Microsoft natively records the same UUIDv5 in the Entra Graph Activity Logs, creating a mathematically provable link between the GCP execution and the Azure resource access.
+
 
 ### Previous vs. Current Architecture
 
