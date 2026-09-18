@@ -1,4 +1,4 @@
-# Multi-Cloud Agent Federation: Google Cloud Vertex AI to Microsoft Entra Agent ID
+# Multi-Cloud Agent Federation: Google Cloud Agent Platform to Microsoft Entra Agent ID
 
 This repository demonstrates how to federate autonomous AI agents running in **Google Cloud Vertex AI Agent Runtime (Agent Engine)** with **Microsoft Entra ID** to access Microsoft APIs (Microsoft Graph and Azure Resource Manager) using **Entra Agent ID** and **Federated Identity Credentials (FIC)** — with zero hardcoded credentials, zero stored secrets, and **no intermediate Service Accounts**.
 
@@ -37,7 +37,7 @@ The ADK Agent writes a custom audit log to Cloud Logging containing the agent, u
 ### Previous vs. Current Architecture
 
 - **Previous (Legacy):** Required creating and maintaining a GCP Service Account, configuring Google Cloud IAM impersonation bindings, and configuring the Entra Agent Blueprint FIC with the Service Account's numeric OAuth Client ID.
-- **Current (Native SPIFFE ID):** The Vertex AI Agent Engine runtime directly mints a Google-signed OIDC JWT whose `sub` claim is the agent's native SPIFFE ID (`spiffe://agents.global.org-...`). Microsoft Entra ID validates this JWT directly against an FIC configured with the SPIFFE ID as the subject. **No Service Account is required.**
+- **Current (Native SPIFFE ID):** The Agent Platform Agent Engine runtime directly mints a Google-signed OIDC JWT whose `sub` claim is the agent's native SPIFFE ID (`spiffe://agents.global.org-...`). Microsoft Entra ID validates this JWT directly against an FIC configured with the SPIFFE ID as the subject. **No Service Account is required.**
 
 > 💡 *Looking for the earlier Service Account-based patterns? They are preserved under the [`legacy/`](./legacy/) directory. See [Legacy Patterns](#-legacy-patterns-service-account-based) below.*
 
@@ -47,7 +47,7 @@ The ADK Agent writes a custom audit log to Cloud Logging containing the agent, u
 
 ```
 ┌───────────────────────────────────────────────┐
-│       Google Cloud Vertex AI Agent            │
+│       Google Cloud Agent Runtime Agent        │
 │         (Native Agent Identity)               │
 └───────────────────────┬───────────────────────┘
                         │ 1. Mint GCP OIDC ID Token with SPIFFE ID Subject
@@ -114,7 +114,7 @@ AZURE_SUBSCRIPTION_ID="33333333-3333-3333-3333-333333333333"    # Azure Subscrip
 
 ---
 
-### 2. Deploy Agent to Vertex AI Agent Engine
+### 2. Deploy Agent to Agent Runtime
 
 Deploy the agent with native Agent Identity:
 
@@ -194,7 +194,7 @@ gcp-to-entra-agent-federation/
 ├── docs/
 │   └── architecture.md            # Sequence diagrams and deep-dive technical details
 ├── scripts/
-│   ├── deploy.py                  # Deploys native SPIFFE Agent to Vertex AI Agent Engine
+│   ├── deploy.py                  # Deploys native SPIFFE Agent to Agent Runtime
 │   ├── setup_agent_identity_iam.sh# Configures IAM and prints Entra FIC parameters
 │   ├── test_agent.py              # Invokes and tests deployed agents
 │   └── legacy/                    # Deployment scripts for legacy SA patterns
